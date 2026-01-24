@@ -1,12 +1,9 @@
 package com.example.foothub.ui.navigation
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.*
 import com.example.foothub.model.Player
@@ -17,15 +14,32 @@ import com.example.foothub.ui.screens.*
 fun AppNavigation(
     windowSizeClass: WindowSizeClass
 ) {
-
     val navController = rememberNavController()
 
-    val isExpanded =
-        windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact
-
+    // ───── ESTADO GLOBAL ─────
     var playerList by remember { mutableStateOf(PlayerRepository.players) }
     var selectedPlayer by remember { mutableStateOf<Player?>(null) }
     var isLoggedIn by remember { mutableStateOf(false) }
+
+    // ───── Confirmación global ─────
+    var playerPendingRemoval by remember { mutableStateOf<Player?>(null) }
+
+    // ───── HANDLER CENTRAL DE FAVORITOS ─────
+    val handleFavoriteAction: (FavoriteAction) -> Unit = { action ->
+        when (action) {
+            is FavoriteAction.Toggle -> {
+                playerList = playerList.map {
+                    if (it.id == action.player.id)
+                        it.copy(isFavorite = !it.isFavorite)
+                    else it
+                }
+            }
+
+            is FavoriteAction.RequestRemove -> {
+                playerPendingRemoval = action.player
+            }
+        }
+    }
 
     Scaffold(
         bottomBar = {
@@ -39,72 +53,89 @@ fun AppNavigation(
             modifier = Modifier.padding(paddingValues)
         ) {
 
-            /* ───────────── HOME / LISTA ───────────── */
+            /* ───────── LISTA (PANTALLA COMPLETA) ───────── */
 
             composable(Screen.List.route) {
-
-                if (isExpanded) {
-                    // TABLET / EXPANDED
-                    Row(modifier = Modifier.fillMaxSize()) {
-
-                        PlayerListScreen(
-                            navController = navController,
-                            modifier = Modifier.weight(1f)
-                        )
-
-                        if (selectedPlayer != null) {
-                            PlayerDetailScreen(
-                                navController = navController,
-                                modifier = Modifier.weight(1f)
-                            )
-                        } else {
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text("Selecciona un jugador")
-                            }
-                        }
-                    }
-
-                } else {
-                    // MÓVIL / COMPACT
-                    PlayerListScreen(
-                        navController = navController
-                    )
-                }
-            }
-
-            /* ───────────── DETALLE ───────────── */
-
-            composable(Screen.Detail.route) {
-                PlayerDetailScreen(navController = navController)
-            }
-
-            /* ───────────── FAVORITOS ───────────── */
-
-            composable(Screen.Favorites.route) {
-                PlayerFavoritesScreen(navController = navController)
-            }
-
-            /* ───────────── PERFIL ───────────── */
-
-            composable(Screen.Profile.route) {
-                ProfileScreen(
-                    isLoggedIn = isLoggedIn,
-                    onLoginToggle = {
-                        isLoggedIn = !isLoggedIn
+                PlayerListScreen(
+                    players = playerList,
+                    onPlayerClick = { player ->
+                        selectedPlayer = player
+                        navController.navigate(Screen.Detail.route)
+                    },
+                    onFavoriteAction = handleFavoriteAction,
+                    onInfoClick = {
+                        navController.navigate(Screen.About.route)
                     }
                 )
             }
 
-            /* ───────────── ABOUT ───────────── */
+            /* ───────── DETALLE (PANTALLA COMPLETA) ───────── */
+
+            composable(Screen.Detail.route) {
+                selectedPlayer?.let { player ->
+                    PlayerDetailScreen(
+                        player = player,
+                        onFavoriteAction = handleFavoriteAction
+                    )
+                }
+            }
+
+            /* ───────── FAVORITOS ───────── */
+
+            composable(Screen.Favorites.route) {
+                PlayerFavoritesScreen(
+                    players = playerList.filter { it.isFavorite },
+                    onPlayerClick = { player ->
+                        selectedPlayer = player
+                        navController.navigate(Screen.Detail.route)
+                    },
+                    onFavoriteAction = handleFavoriteAction,
+                    onInfoClick = {
+                        navController.navigate(Screen.About.route)
+                    }
+                )
+            }
+
+            /* ───────── PERFIL ───────── */
+
+            composable(Screen.Profile.route) {
+                ProfileScreen(
+                    isLoggedIn = isLoggedIn,
+                    onLoginToggle = { isLoggedIn = !isLoggedIn }
+                )
+            }
+
+            /* ───────── ABOUT ───────── */
 
             composable(Screen.About.route) {
                 AboutScreen()
             }
         }
+    }
+
+    // ───────── ALERT DIALOG GLOBAL ─────────
+    playerPendingRemoval?.let { player ->
+        AlertDialog(
+            onDismissRequest = { playerPendingRemoval = null },
+            title = { Text("Quitar de favoritos") },
+            text = { Text("¿Quieres eliminar a ${player.name} de favoritos?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    playerList = playerList.map {
+                        if (it.id == player.id)
+                            it.copy(isFavorite = false)
+                        else it
+                    }
+                    playerPendingRemoval = null
+                }) {
+                    Text("Eliminar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { playerPendingRemoval = null }) {
+                    Text("Cancelar")
+                }
+            }
+        )
     }
 }

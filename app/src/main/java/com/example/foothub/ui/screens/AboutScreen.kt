@@ -51,8 +51,8 @@ fun AboutScreen() {
             .background(
                 Brush.verticalGradient(
                     listOf(
-                        Color(0xFFE3F2FD), // Azul claro FootHub
-                        Color.White
+                        Color(0xFF7DCCF6),
+                        Color(0xFFCC5E34)
                     )
                 )
             ),
@@ -97,7 +97,7 @@ fun AboutScreen() {
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "Versión 1.0",
+                text = "Versión 3.0",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground
             )

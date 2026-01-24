@@ -4,36 +4,34 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.example.foothub.repository.PlayerRepository
+import com.example.foothub.model.Player
 import com.example.foothub.ui.components.FootHubWideHeader
 import com.example.foothub.ui.components.PlayerCard
-import com.example.foothub.ui.navigation.Screen
+import com.example.foothub.ui.navigation.FavoriteAction
 
 @Composable
 fun PlayerFavoritesScreen(
-    navController: NavController,
+    players: List<Player>,
+    onPlayerClick: (Player) -> Unit,
+    onFavoriteAction: (FavoriteAction) -> Unit,
+    onInfoClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    // De momento: favoritos simulados (estructura WeAnime)
-    val favoriteList = PlayerRepository.players.filter { it.isFavorite }
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFE3F2FD), // Azul claro FootHub
+                    listOf(
+                        Color(0xFFCC5E34),
                         Color.White
                     )
                 )
@@ -41,8 +39,7 @@ fun PlayerFavoritesScreen(
             .systemBarsPadding()
     ) {
 
-        if (favoriteList.isEmpty()) {
-            // Estado vacío
+        if (players.isEmpty()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -51,14 +48,13 @@ fun PlayerFavoritesScreen(
             ) {
                 Text(
                     text = "No hay favoritos todavía",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface
+                    style = MaterialTheme.typography.titleLarge
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Marca jugadores con el icono de favorito",
+                    text = "Marca jugadores con el corazón",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -74,7 +70,7 @@ fun PlayerFavoritesScreen(
                 ),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(favoriteList) { player ->
+                items(players) { player ->
                     PlayerCard(
                         name = player.name,
                         team = player.team,
@@ -82,23 +78,19 @@ fun PlayerFavoritesScreen(
                         photoUrl = player.photoUrl,
                         isFavorite = true,
                         onCardClick = {
-                            navController.currentBackStackEntry
-                                ?.savedStateHandle
-                                ?.set("player", player)
-                            navController.navigate(Screen.Detail.route)
+                            onPlayerClick(player)
                         },
                         onFavoriteClick = {
-                            // Se conectará al ViewModel más adelante
+                            onFavoriteAction(FavoriteAction.RequestRemove(player))
                         }
                     )
                 }
             }
         }
 
-        // Header superior
         FootHubWideHeader(
             title = "Favoritos",
-            onInfoClick = {},
+            onInfoClick = onInfoClick,
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(horizontal = 20.dp)

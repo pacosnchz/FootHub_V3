@@ -27,7 +27,7 @@ fun ProfileScreen(
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFFE3F2FD), // Azul claro FootHub
+                        Color(0xFFCC5E34), // Azul claro FootHub
                         Color.White
                     )
                 )

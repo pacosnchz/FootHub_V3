@@ -23,7 +23,7 @@ fun FavoriteButton(
             },
             contentDescription = "Marcar como favorito",
             tint = if (isFavorite) {
-                Color(0xFF1E88E5) // Azul FootHub
+                Color(0xFFCC5E34) // Azul FootHub
             } else {
                 MaterialTheme.colorScheme.onSurface
             }
