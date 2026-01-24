@@ -23,7 +23,7 @@ import coil.compose.AsyncImage
 fun PlayerCard(
     name: String,
     team: String,
-    position: String,
+    nationality: String,
     photoUrl: String,
     isFavorite: Boolean,
     onCardClick: () -> Unit,
@@ -71,7 +71,7 @@ fun PlayerCard(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "$team • $position",
+                    text = "$team • $nationality",
                     style = MaterialTheme.typography.bodyMedium,
                     color = TextSecondary,
                     maxLines = 2

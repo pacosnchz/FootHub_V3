@@ -2,13 +2,13 @@ package com.example.foothub.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -18,6 +18,10 @@ import coil.compose.AsyncImage
 import com.example.foothub.model.Player
 import com.example.foothub.ui.components.FavoriteButton
 import com.example.foothub.ui.navigation.FavoriteAction
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+
+
 
 @Composable
 fun PlayerDetailScreen(
@@ -25,13 +29,20 @@ fun PlayerDetailScreen(
     onFavoriteAction: (FavoriteAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var isFavorite by remember { mutableStateOf(player.isFavorite) }
+
+    //  SINCRONIZA el estado local con el global
+    LaunchedEffect(player.isFavorite) {
+        isFavorite = player.isFavorite
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
 
-        // ───────── MITAD SUPERIOR: IMAGEN ─────────
+        // ───────── IMAGEN ─────────
         AsyncImage(
             model = player.photoUrl,
             contentDescription = player.name,
@@ -41,7 +52,7 @@ fun PlayerDetailScreen(
             contentScale = ContentScale.Crop
         )
 
-        // ───────── MITAD INFERIOR: INFO ─────────
+        // ───────── INFO ─────────
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -49,28 +60,19 @@ fun PlayerDetailScreen(
                 .padding(20.dp)
         ) {
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = player.name,
                     style = MaterialTheme.typography.headlineLarge,
                     modifier = Modifier.weight(1f)
                 )
 
-                FavoriteButton(
-                    isFavorite = player.isFavorite,
-                    onClick = {
-                        if (player.isFavorite) {
-                            onFavoriteAction(FavoriteAction.RequestRemove(player))
-                        } else {
-                            onFavoriteAction(FavoriteAction.Toggle(player))
-                        }
-                    }
-                )
+
+
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
 
             Text(
                 text = "Equipo: ${player.team}",

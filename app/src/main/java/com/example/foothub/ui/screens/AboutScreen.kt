@@ -97,7 +97,7 @@ fun AboutScreen() {
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "Versión 3.0",
+                text = "Versión 3.2",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground
             )

@@ -21,22 +21,26 @@ fun AppNavigation(
     var selectedPlayer by remember { mutableStateOf<Player?>(null) }
     var isLoggedIn by remember { mutableStateOf(false) }
 
-    // ───── Confirmación global ─────
+    // ───── CONFIRMACIÓN GLOBAL ─────
     var playerPendingRemoval by remember { mutableStateOf<Player?>(null) }
 
-    // ───── HANDLER CENTRAL DE FAVORITOS ─────
+    // ───── HANDLER ÚNICO DE FAVORITOS ─────
     val handleFavoriteAction: (FavoriteAction) -> Unit = { action ->
         when (action) {
             is FavoriteAction.Toggle -> {
-                playerList = playerList.map {
-                    if (it.id == action.player.id)
-                        it.copy(isFavorite = !it.isFavorite)
-                    else it
-                }
-            }
+                val player = action.player
 
-            is FavoriteAction.RequestRemove -> {
-                playerPendingRemoval = action.player
+                if (player.isFavorite) {
+                    // 🔴 PEDIR CONFIRMACIÓN
+                    playerPendingRemoval = player
+                } else {
+                    // 🟢 AÑADIR DIRECTO
+                    playerList = playerList.map {
+                        if (it.id == player.id)
+                            it.copy(isFavorite = true)
+                        else it
+                    }
+                }
             }
         }
     }
@@ -53,7 +57,7 @@ fun AppNavigation(
             modifier = Modifier.padding(paddingValues)
         ) {
 
-            /* ───────── LISTA (PANTALLA COMPLETA) ───────── */
+            /* ───────── LISTA ───────── */
 
             composable(Screen.List.route) {
                 PlayerListScreen(
@@ -69,7 +73,7 @@ fun AppNavigation(
                 )
             }
 
-            /* ───────── DETALLE (PANTALLA COMPLETA) ───────── */
+            /* ───────── DETALLE ───────── */
 
             composable(Screen.Detail.route) {
                 selectedPlayer?.let { player ->
