@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Círculo naranja -->
+    <path
+        android:fillColor="#FF6600"
+        android:pathData="M50,5
+                          A45,45 0 1 1 49.9,5" />
+
+    <!-- Letra F en azul marino (versión más centrada y completa) -->
+    <path
+        android:fillColor="#031D59"
+        android:pathData="M30,30
+                          h40
+                          v12
+                          h-28
+                          v8
+                          h20
+                          v12
+                          h-20
+                          v15
+                          h-12
+                          z" />
+</vector>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Tema principal -->
+    <style name="Theme.FootHub" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Puedes agregar colores si quieres -->
+    </style>
+
+    <!-- Tema de SplashScreen usando la API oficial -->
+    <style name="Theme.FootHub.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_fh_logo</item>
+<!--        <item name="windowSplashScreenBrandingImage">@drawable/ic_launcher_foreground</item>-->
+        <item name="postSplashScreenTheme">@style/Theme.FootHub</item>
+    </style>
+
+</resources>
