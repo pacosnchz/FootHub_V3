@@ -13,6 +13,6 @@ interface FootballApiService {
     @GET("competitions/{competition}/scorers")
     suspend fun getTopScorers(
         @Path("competition") competition: String = "PL",
-        @Query("limit")      limit: Int = 20
+        @Query("limit")      limit: Int = 150
     ): TopScorersResponse
 }

@@ -32,7 +32,7 @@ fun ProfileScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(listOf(Color(0xFFCC5E34), Color.White))),
+            .background(Color(0xFFFFF8F0)),
         contentAlignment = Alignment.Center
     ) {
         Card(

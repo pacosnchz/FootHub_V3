@@ -1,3 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FootHub</string>
+
+    <!-- Navegación / pantallas -->
+    <string name="screen_list">Inicio</string>
+    <string name="screen_favorites">Favoritos</string>
+    <string name="screen_profile">Perfil</string>
+    <string name="screen_about">Acerca de</string>
+    <string name="screen_detail">Detalle</string>
+
+    <!-- Perfil -->
+    <string name="label_username">Nombre de usuario</string>
+    <string name="label_guest">Invitado</string>
+    <string name="label_theme">Tema de la aplicación</string>
+    <string name="hint_login_prompt">Establece tu nombre en el perfil</string>
+    <string name="action_edit_name">Editar nombre</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_cancel">Cancelar</string>
+
+    <!-- Temas -->
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="theme_system">Sistema</string>
+
+    <!-- Lista de jugadores -->
+    <string name="hint_search">Buscar jugador, equipo o país</string>
+    <string name="error_loading">No se pudieron cargar los jugadores</string>
+    <string name="action_retry">Reintentar</string>
+
+    <!-- Favoritos -->
+    <string name="label_no_favorites">No hay favoritos todavía</string>
+    <string name="hint_favorites_empty">Marca jugadores con el corazón</string>
+    <string name="toast_already_favorite">%1$s ya está en favoritos</string>
+    <string name="dialog_remove_favorite_title">Quitar de favoritos</string>
+    <string name="dialog_remove_favorite_msg">¿Quieres eliminar a %1$s de favoritos?</string>
+    <string name="action_delete">Eliminar</string>
+
+    <!-- Detalle -->
+    <string name="label_team">Equipo</string>
+    <string name="label_position">Posición</string>
+    <string name="label_nationality">Nacionalidad</string>
+    <string name="label_dob">Fecha de nacimiento</string>
+    <string name="stat_goals">Goles</string>
+    <string name="stat_assists">Asistencias</string>
+    <string name="stat_penalties">Penaltis</string>
+
+    <!-- Comentarios -->
+    <string name="label_comments">Comentarios</string>
+    <string name="hint_no_comments">Sé el primero en comentar</string>
+    <string name="action_add_comment">Añadir comentario</string>
+    <string name="dialog_add_comment_title">Nuevo comentario</string>
+    <string name="hint_comment">Escribe tu comentario…</string>
+    <string name="hint_set_username_first">Configura tu nombre en el perfil para firmar comentarios</string>
+    <string name="action_publish">Publicar</string>
+
+    <!-- About -->
+    <string name="about_version">Versión 3.2</string>
+    <string name="about_description">Repositorio de fútbol con datos de equipos y jugadores.</string>
+    <string name="about_contact">Contacto</string>
 </resources>

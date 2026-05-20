@@ -35,7 +35,7 @@ fun PlayerFavoritesScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(listOf(Color(0xFFCC5E34), Color.White)))
+            .background(Color(0xFFFFF8F0))
             .systemBarsPadding()
     ) {
         if (favorites.isEmpty()) {

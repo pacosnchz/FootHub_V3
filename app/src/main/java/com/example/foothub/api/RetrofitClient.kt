@@ -12,7 +12,7 @@ object RetrofitClient {
 
     // ⚠️  Sustituye este valor por tu token gratuito de football-data.org
     // Regístrate en: https://www.football-data.org/client/register
-    private const val API_TOKEN = "TU_TOKEN_AQUI"
+    private const val API_TOKEN = "6d798baf3b514b10bd94b20cf9ef7326"
 
     private val authInterceptor = Interceptor { chain ->
         val request = chain.request().newBuilder()
