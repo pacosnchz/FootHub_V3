@@ -5,8 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.foothub.ui.navigation.AppNavigation
 import com.example.foothub.ui.theme.FootHubTheme
+import com.example.foothub.viewmodel.ProfileViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -15,8 +19,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            FootHubTheme {
-                val windowSizeClass = calculateWindowSizeClass(this)
+            val profileViewModel: ProfileViewModel = viewModel()
+            val prefs by profileViewModel.preferences.collectAsState()
+            val windowSizeClass = calculateWindowSizeClass(this)
+
+            FootHubTheme(appTheme = prefs.theme) {
                 AppNavigation(windowSizeClass = windowSizeClass)
             }
         }
